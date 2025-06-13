@@ -15,16 +15,16 @@ function App() {
 
   return (
     <>
-        <Navbar/>
-        <Routes>
-          <Route path="/" element={<MainPage />} />
-          <Route path="/app" element={<MainPage />} />
-          <Route path="/app/login" element={<LoginPage />} />
-          <Route path="/app/register" element={<RegisterPage />} />
-          <Route path="/app/product/:productId" element={<DetailsPage/>} />
-          
-        </Routes>
-        </>
+      <Navbar />
+      <Routes>
+        <Route path="/" element={<MainPage />} />
+        <Route path="/app" element={<MainPage />} />
+        <Route path="/app/login" element={<LoginPage />} />
+        <Route path="/app/register" element={<RegisterPage />} />
+        <Route path="/app/product/:productId" element={<DetailsPage />} />
+        <Route path="/app/search" element={<SearchPage />} />
+      </Routes>
+    </>
   );
 }
 
