@@ -18,18 +18,24 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18  # Aktualisiert auf eine moderne Version
 
       - name: Install JSHint
         run: npm install jshint --global
 
+      - name: Create JSHint Config
+        run: |
+          # Erstelle .jshintrc Datei mit ES8 Konfiguration
+          echo '{
+            "esversion": 8,
+            "node": true,
+            "strict": false
+          }' > .jshintrc
+
       - name: Run Linter
         run: |
-          # This command finds all JavaScript files recursively and runs JSHint on them
-          find ./giftlink-backend -name app.js -exec jshint {} +
-          find ./giftlink-backend -name auth.js -exec jshint {} +
-          find ./giftlink-backend -name giftRoutes.js -exec jshint {} +
-          find ./giftlink-backend -name searchRoutes.js -exec jshint {} +
+          # JSHint mit expliziter ES-Version auf alle JS-Dateien
+          find ./giftlink-backend -name "*.js" -not -path "*/node_modules/*" -exec jshint --esversion=8 {} +
           echo "Linted all the js files successfully"
 
   client_build:
@@ -43,11 +49,19 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 18  # Aktualisiert auf eine moderne Version
+
+      - name: Cache dependencies
+        uses: actions/cache@v3
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
 
       - name: Run build
         run: |
           cd giftlink-frontend
-          npm install
+          npm ci  # Verwendet npm ci für deterministische Builds
           npm run build
           echo "Client-side build successfully"
