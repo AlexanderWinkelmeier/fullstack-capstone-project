@@ -30,12 +30,12 @@ jobs:
             "esversion": 8,
             "node": true,
             "strict": false
-          }' > .jshintrc
+          }' > ./giftlink-backend/.jshintrc
 
       - name: Run Linter
         run: |
-          # JSHint mit expliziter ES-Version auf alle JS-Dateien
-          find ./giftlink-backend -name "*.js" -not -path "*/node_modules/*" -exec jshint --esversion=8 {} +
+          # JSHint auf alle JS-Dateien (verwendet .jshintrc automatisch)
+          find ./giftlink-backend -name "*.js" -not -path "*/node_modules/*" -exec jshint {} +
           echo "Linted all the js files successfully"
 
   client_build:
