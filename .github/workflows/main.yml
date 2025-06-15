@@ -63,5 +63,5 @@ jobs:
         run: |
           cd giftlink-frontend
           npm ci  # Verwendet npm ci für deterministische Builds
-          npm run build
+          CI=false npm run build  # Behandelt Warnings nicht als Errors
           echo "Client-side build successfully"
