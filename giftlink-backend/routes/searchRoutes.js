@@ -19,14 +19,17 @@ router.get('/', async (req, res, next) => {
         }
 
         // Task 3: Add other filters to the query
-        if (req.query.category) {
+        if (req.query.category && req.query.category.trim() !== '') {
             query.category = req.query.category;
         }
-        if (req.query.condition) {
+        if (req.query.condition && req.query.condition.trim() !== '') {
             query.condition = req.query.condition;
         }
-        if (req.query.age_years) {
-            query.age_years = { $lte: parseInt(req.query.age_years) };
+        if (req.query.age_years && !isNaN(req.query.age_years)) {
+            const ageValue = parseInt(req.query.age_years, 10);
+            if (ageValue >= 0) {
+                query.age_years = { $lte: ageValue };
+            }
         }
 
         // Task 4: Fetch filtered gifts using the find(query) method. Make sure to use await and store the result in the `gifts` constant
@@ -34,6 +37,7 @@ router.get('/', async (req, res, next) => {
 
         res.json(gifts);
     } catch (e) {
+        console.error('Error searching for gifts:', e);
         next(e);
     }
 });

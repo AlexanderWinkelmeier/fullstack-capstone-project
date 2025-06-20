@@ -2,57 +2,47 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const pinoHttp = require('pino-http');
 const pinoLogger = require('./logger');
-const authRoutes = require('./routes/authRoutes'); // Aufgabe 1: Import ist bereits vorhanden
-
+const authRoutes = require('./routes/authRoutes');
+const giftRoutes = require('./routes/giftRoutes');
+const searchRoutes = require('./routes/searchRoutes');
 const connectToDatabase = require('./models/db');
 const { loadData } = require('./util/import-mongo/index');
 
 const app = express();
-app.use('*', cors());
 const port = 3060;
 
-// Connect to MongoDB; we just do this one time
+// Middleware
+app.use('*', cors());
+app.use(express.json());
+app.use(pinoHttp({ logger: pinoLogger }));
+
+// Connect to MongoDB
 connectToDatabase()
   .then(() => {
     pinoLogger.info('Connected to DB');
   })
-  .catch((e) => console.error('Failed to connect to DB', e));
+  .catch((e) => {
+    pinoLogger.error('Failed to connect to DB', e);
+    process.exit(1); // Exit if DB connection fails
+  });
 
-app.use(express.json());
-
-// Route files
-// Mount auth routes
-app.use('/auth', authRoutes);
-
-// Gift API routes
-const giftRoutes = require('./routes/giftRoutes');
-
-// Search API routes
-const searchRoutes = require('./routes/searchRoutes');
-
-const pinoHttp = require('pino-http');
-const logger = require('./logger');
-
-app.use(pinoHttp({ logger }));
-
-// Use Routes
-// Gift API Task 2: add the giftRoutes to the server by using the app.use() method.
-app.use('/api/gifts', giftRoutes);
-
-// Search API Task 2: add the searchRoutes to the server by using the app.use() method.
-app.use('/api/search', searchRoutes);
-
-// Global Error Handler
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).send('Internal Server Error');
-});
-
+// Routes
 app.get('/', (req, res) => {
   res.send('Inside the server');
 });
 
+app.use('/auth', authRoutes);
+app.use('/api/gifts', giftRoutes);
+app.use('/api/search', searchRoutes);
+
+// Global Error Handler
+app.use((err, req, res, next) => {
+  pinoLogger.error(err);
+  res.status(500).json({ error: 'Internal Server Error' });
+});
+
 app.listen(port, () => {
-  console.log(`Server running on port ${port}`);
+  pinoLogger.info(`Server running on port ${port}`);
 });

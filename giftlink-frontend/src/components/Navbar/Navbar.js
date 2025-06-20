@@ -1,23 +1,25 @@
 import React from 'react';
+// 1. Der Import von { Link } aus react-router-dom ist notwendig.
+import { Link } from 'react-router-dom';
 
-// Kein Import von { Link } nötig, da wir nur <a>-Tags verwenden.
 export default function Navbar() {
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <a className="navbar-brand" href="/">GiftLink</a>
+            {/* 2. <a> durch <Link> ersetzt und href durch "to" */}
+            <Link className="navbar-brand" to="/">GiftLink</Link>
 
             <div className="collapse navbar-collapse" id="navbarNav">
                 <ul className="navbar-nav">
                     {/* Task 1: Add links to Home and Gifts below */}
                     <li className="nav-item">
-                        <a className="nav-link" href="/home.html">Home</a> {/* Link to home.html */}
+                        {/* 3. Link zu "/" für Home, um Konsistenz zu wahren */}
+                        <Link className="nav-link" to="/">Home</Link>
                     </li>
                     <li className="nav-item">
-                        <a className="nav-link" href="/app">Gifts</a> {/* Updated Link */}
+                        <Link className="nav-link" to="/app">Gifts</Link>
                     </li>
                     <li className="nav-item">
-                        {/* Korrigiert: von <Link> zu <a> geändert für Konsistenz */}
-                        <a className="nav-link" href="/app/search">Search</a>
+                        <Link className="nav-link" to="/app/search">Search</Link>
                     </li>
                 </ul>
             </div>

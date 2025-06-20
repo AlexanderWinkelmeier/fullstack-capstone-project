@@ -1,5 +1,6 @@
 import React from 'react';
-import { Routes, Route, useNavigate } from 'react-router-dom';
+// useNavigate wurde entfernt, da es nicht verwendet wird.
+import { Routes, Route } from 'react-router-dom';
 import MainPage from './components/MainPage/MainPage';
 import DetailsPage from './components/DetailsPage/DetailsPage';
 import LoginPage from './components/LoginPage/LoginPage';
@@ -11,7 +12,7 @@ import './App.css';
 import Navbar from './components/Navbar/Navbar';
 
 function App() {
-  const navigate = useNavigate();
+  // Die Zeile "const navigate = useNavigate();" wurde entfernt.
 
   return (
     <>

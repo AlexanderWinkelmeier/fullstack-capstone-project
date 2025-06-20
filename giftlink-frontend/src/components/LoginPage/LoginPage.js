@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+// 1. Die 'Link'-Komponente wird importiert
+import { useNavigate, Link } from 'react-router-dom';
 import './LoginPage.css';
 
 function LoginPage() {
@@ -29,13 +30,12 @@ function LoginPage() {
 
       const data = await response.json();
 
-      // Speichere den Token im localStorage
       localStorage.setItem('authToken', data.authtoken);
       localStorage.setItem('userEmail', data.user.email);
       localStorage.setItem(
         'userName',
         `${data.user.firstName} ${data.user.lastName}`
-      ); // Weiterleitung zur Hauptseite
+      );
       navigate('/app');
     } catch (error) {
       alert(error.message || 'Login fehlgeschlagen');
@@ -85,9 +85,10 @@ function LoginPage() {
 
             <p className="mt-4 text-center">
               Neu hier?{' '}
-              <a href="/app/register" className="text-primary">
+              {/* 2. Das <a>-Tag wurde durch <Link> ersetzt */}
+              <Link to="/app/register" className="text-primary">
                 Hier registrieren
-              </a>
+              </Link>
             </p>
           </div>
         </div>
