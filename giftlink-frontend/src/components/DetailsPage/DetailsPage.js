@@ -15,7 +15,6 @@ function DetailsPage() {
     if (!authenticationToken) {
       // Task 1: Check for authentication and redirect
       navigate('/app/login');
-      return; // Wichtig: Früher Return um weitere Ausführung zu verhindern
     }
 
     // get the gift to be rendered on the details page
@@ -23,12 +22,7 @@ function DetailsPage() {
       try {
         // Task 2: Fetch gift details
         const url = `${urlConfig.backendUrl}/api/gifts/${productId}`;
-        const response = await fetch(url, {
-          headers: {
-            'Authorization': `Bearer ${authenticationToken}`, // Auth-Header hinzufügen
-            'Content-Type': 'application/json'
-          }
-        });
+        const response = await fetch(url);
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
@@ -52,7 +46,7 @@ function DetailsPage() {
     navigate(-1);
   };
 
-  // The comments have been hardcoded for this project.
+  //The comments have been hardcoded for this project.
   const comments = [
     {
       author: 'John Doe',
@@ -93,6 +87,7 @@ function DetailsPage() {
         <div className="card-body">
           <div className="image-placeholder-large">
             {gift.image ? (
+              // Task 5: Display gift image
               <img
                 src={gift.image}
                 alt={gift.name}
@@ -104,23 +99,23 @@ function DetailsPage() {
           </div>
           {/* Task 6: Display gift details */}
           <p>
-            <strong>Category: </strong>
+            <strong>Category:</strong>
             {gift.category}
           </p>
           <p>
-            <strong>Condition: </strong>
+            <strong>Condition:</strong>
             {gift.condition}
           </p>
           <p>
-            <strong>Date Added: </strong>
+            <strong>Date Added:</strong>
             {gift.dateAdded}
           </p>
           <p>
-            <strong>Age (Years): </strong>
+            <strong>Age (Years):</strong>
             {gift.age}
           </p>
           <p>
-            <strong>Description: </strong>
+            <strong>Description:</strong>
             {gift.description}
           </p>
         </div>
